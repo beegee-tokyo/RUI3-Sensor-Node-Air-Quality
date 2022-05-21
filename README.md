@@ -1,5 +1,5 @@
-# RUI3-Sensor-Node
-RUI3 example code for WisBlock I2C sensor modules.
+# RUI3-Sensor-Node-Air-Quality
+RUI3 example code for WisBlock I2C sensor modules, focused on Air Quality Sensors.
 
 This code is _**Work in progress**_ and far from finished. But it can give a first start how to use RUI3.     
 
@@ -21,40 +21,9 @@ The code compiles on both RAK4631 and RAK3172 and I test it on both modules.
 | [RAK5005-O](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK5005-O/Overview/) ⤴️ | WisBlock Base board | ✔ |
 | [RAK19003](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK19003/Overview/) ⤴️ | WisBlock Mini Base board | ✔ |
 | [RAK19001](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK19001/Overview/) ⤴️ | WisBlock Fullsize Base board | ✔ |
-| [RAK1901](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1901/Overview/) ⤴️ | WisBlock Temperature and Humidty Sensor | ✔ |
-| [RAK1902](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1902/Overview/) ⤴️ | WisBlock Barometer Pressure Sensor | ✔ |
-| [RAK1903](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1903/Overview/) ⤴️ | WisBlock Ambient Light Sensor | ✔ |
-| [RAK1904](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1904/Overview/) ⤴️ | WisBlock Acceleration Sensor (used for GNSS solutions) | ✔ |
-| [~~RAK1905~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1905/Overview/) ⤴️ | WisBlock 9 DOF sensor | Work in progress |
 | [RAK1906](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1906/Overview/) ⤴️ | WisBlock Environment Sensor | ✔ |
-| [~~RAK1910~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1910/Overview/) ⤴️ | WisBlock GNSS Sensor | Work in progress |
-| [RAK1921](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1921/Overview/) ⤴️ | WisBlock OLED display | ✔ |
-| [~~RAK12002~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12002/Overview/) ⤴️ | WisBlock RTC module | Work in progress |
-| [RAK12003](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12003/Overview/) ⤴️ | WisBlock FIR sensor | ✔ |
-| [~~RAK12004~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12004/Overview/) ⤴️ | WisBlock MQ2 Gas sensor | Work in progress |
-| [~~RAK12008~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12008/Overview/) ⤴️ | WisBlock MG812 CO2 Gas sensor | Work in progress |
-| [~~RAK12009~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12009/Overview/) ⤴️ | WisBlock MQ3 Alcohol Gas sensor | Work in progress |
-| [RAK12010](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12010/Overview/) ⤴️ | WisBlock Ambient Light sensor | ✔ |
-| [~~RAK12014~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12014/Overview/) ⤴️ | WisBlock Laser ToF sensor | Work in progress |
-| [~~RAK12019~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12019/Overview/) ⤴️ | WisBlock UV Light sensor | Work in progress |
-| [~~RAK12025~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12025/Overview/) ⤴️ | WisBlock Gyroscope sensor | Work in progress |
-| [~~RAK12023/RAK12035~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12023/Overview/) ⤴️ | WisBlock Soil Moisture and Temperature sensor | Work in progress |
 | [RAK12037](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12037/Overview/) ⤴️ | WisBlock CO2 sensor | ✔ |
 | [RAK12047](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12047/Overview/) ⤴️ | WisBlock VOC sensor | ✔ |
-| [~~RAK12500~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12500/Overview/) ⤴️ | WisBlock GNSS Sensor | Work in progress |
-| [~~RAK14002~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK14002/Overview/) ⤴️ | WisBlock 3 button touch pad | Work in progress |
-| [~~RAK14003~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK14003/Overview/) ⤴️ | WisBlock LED bar display | Work in progress |
-| [~~RAK14008~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK14008/Overview/) ⤴️ | WisBlock Gesture sensor | Work in progress |
-| [~~RAK16000~~](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK16000/Overview/) ⤴️ | WisBlock DC current sensor | Work in progress |
-
-## _LIMITATIONS_     
-- The RAK1904 module _**MUST**_ be installed in     
-    - Slot C of RAK5005-O, RAK19007 or RAK19001
-    - Slot A of RAK19003
-- The RAK1905 module _**MUST**_ be installed in     
-    - Slot C of RAK5005-O, RAK19007 or RAK19001
-    - Slot A of RAK19003
-- RAK1910 and RAK12500 cannot be used together (both are GNSS location trackers)
 
 ----
 
@@ -68,36 +37,11 @@ The code compiles on both RAK4631 and RAK3172 and I test it on both modules.
 - [ArduinoJson](https://registry.platformio.org/libraries/bblanchon/ArduinoJson) ⤴️
 ## Sensor libraries
 - [Adafruit BME680 Library](https://registry.platformio.org/libraries/adafruit/Adafruit%20BME680%20Library) ⤴️
-- [Adafruit LIS3DH](https://registry.platformio.org/libraries/adafruit/Adafruit%20LIS3DH) ⤴️
-- [Adafruit LPS2X](https://registry.platformio.org/libraries/adafruit/Adafruit%20LPS2X) ⤴️
-- [Adafruit MCP23017 Arduino Library](https://registry.platformio.org/libraries/adafruit/Adafruit%20MCP23017%20Arduino%20Library) ⤴️
 - [Adafruit Unified Sensor](https://registry.platformio.org/libraries/adafruit/Adafruit%20Unified%20Sensor) ⤴️
-- [ClosedCube OPT3001](https://github.com/beegee-tokyo/ClosedCube_OPT3001_Arduino) ⤴️
-- [Coulomb Counter](https://registry.platformio.org/libraries/seeed-studio/Grove%20-%20Coulomb%20Counter%20for%203.3V%20to%205V%20LTC2941) ⤴️
-- [INA219_WE](https://registry.platformio.org/libraries/wollewald/INA219_WE) ⤴️
-- [Melopero RV3028](https://registry.platformio.org/libraries/melopero/Melopero%20RV3028) ⤴️
-- [nRF52_OLED](https://registry.platformio.org/libraries/beegee-tokyo/nRF52_OLED) ⤴️
-- [Pololu VL53L0X](https://registry.platformio.org/libraries/pololu/VL53L0X) ⤴️
-- [RAK12019_LTR390_UV_Light](https://registry.platformio.org/libraries/beegee-tokyo/RAK12019_LTR390_UV_Light) ⤴️
-- [RAK12035_SoilMoisture](https://registry.platformio.org/libraries/beegee-tokyo/RAK12035_SoilMoisture) ⤴️
-- [RAKwireless CAP1293 Touch Pad library](https://registry.platformio.org/libraries/beegee-tokyo/Arduino%20CAP1293%20Touch%20Pad%20library) ⤴️
-- [RAK I3G4250D Gyroscope](https://registry.platformio.org/libraries/beegee-tokyo/RAK%20I3G4250D%20Gyroscope) ⤴️
-- [RAKwireless MQx library](https://registry.platformio.org/libraries/rakwireless/RAKwireless%20MQx%20library) ⤴️
-- [RAKwireless VEML Light Sensor](https://registry.platformio.org/libraries/rakwireless/RAKwireless%20VEML%20Light%20Sensor) ⤴️
-- [RevEng PAJ7620](https://registry.platformio.org/libraries/acrandal/RevEng%20PAJ7620) ⤴️
 - [Sensirion Core](https://registry.platformio.org/libraries/sensirion/Sensirion%20Core) ⤴️
 - [Sensirion Gas Index Algorithm](https://registry.platformio.org/libraries/sensirion/Sensirion%20Gas%20Index%20Algorithm) ⤴️
 - [Sensirion I2C SGP40](https://registry.platformio.org/libraries/sensirion/Sensirion%20I2C%20SGP40) ⤴️
-- [SparkFun SHTC3 Humidity and Temperature Sensor Library](https://registry.platformio.org/libraries/sparkfun/SparkFun%20SHTC3%20Humidity%20and%20Temperature%20Sensor%20Library) ⤴️
-- [SparkFun u-blox GNSS Arduino Library](https://registry.platformio.org/libraries/sparkfun/SparkFun%20u-blox%20GNSS%20Arduino%20Library) ⤴️
-- [TinyGPSPlus](https://registry.platformio.org/libraries/mikalhart/TinyGPSPlus) ⤴️
-- [LPS35HW](https://registry.platformio.org/libraries/pilotak/LPS35HW) ⤴️
 - [SparkFun SCD30 Arduino Library](https://registry.platformio.org/libraries/sparkfun/SparkFun%20SCD30%20Arduino%20Library) ⤴️
-- [SparkFun MLX90632 Noncontact Infrared Temperature Sensor](https://registry.platformio.org/libraries/sparkfun/SparkFun%20MLX90632%20Noncontact%20Infrared%20Temperature%20Sensor) ⤴️
-- [Melopero AMG8833](https://registry.platformio.org/libraries/melopero/Melopero%20AMG8833) ⤴️
-- [SparkFun ADXL313 Arduino Library](https://registry.platformio.org/libraries/sparkfun/SparkFun%20ADXL313%20Arduino%20Library) ⤴️
-- [RAKwireless Storage](https://registry.platformio.org/libraries/beegee-tokyo/RAKwireless%20Storage) ⤴️
-- [ArduinoECCX08](https://registry.platformio.org/libraries/arduino-libraries/ArduinoECCX08) ⤴️
 
 ----
 
