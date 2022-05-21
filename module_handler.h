@@ -29,26 +29,26 @@ typedef struct sensors_s
 extern volatile sensors_t found_sensors[];
 
 // Index for known I2C devices
-#define ACC_ID 0	   // RAK1904 accelerometer
-#define LIGHT_ID 1	   // RAK1903 light sensor
+// #define ACC_ID 0	   // RAK1904 accelerometer
+// #define LIGHT_ID 1	   // RAK1903 light sensor
 // #define GNSS_ID 2	   // RAK12500 GNSS sensor
-#define PRESS_ID 3	   // RAK1902 barometric pressure sensor
-#define TEMP_ID 4	   // RAK1901 temperature & humidity sensor
+// #define PRESS_ID 3	   // RAK1902 barometric pressure sensor
+// #define TEMP_ID 4	   // RAK1901 temperature & humidity sensor
 #define ENV_ID 5	   // RAK1906 environment sensor
 // #define SOIL_ID 6	   // RAK12035 soil moisture sensor
-#define LIGHT2_ID 7	   // RAK12010 light sensor
+// #define LIGHT2_ID 7	   // RAK12010 light sensor
 // #define EEPROM_ID 8	   // RAK15000 EEPROM module
 // #define MQ2_ID 9	   // RAK12004 MQ2 CO2 gas sensor
 // #define MG812_ID 10	   // RAK12008 MG812 CO2 gas sensor
 // #define MQ3_ID 11	   // RAK12009 MQ3 Alcohol gas sensor
 // #define TOF_ID 12	   // RAK12014 Laser ToF sensor
-#define RTC_ID 13	   // RAK12002 RTC module
+// #define RTC_ID 13	   // RAK12002 RTC module
 // #define BAR_ID 14	   // RAK14003 LED bargraph module
 #define VOC_ID 15	   // RAK12047 VOC sensor
 // #define GYRO_ID 16	   // RAK12025 Gyroscope
 // #define GESTURE_ID 17  // RAK14008 Gesture sensor
 // #define OLED_ID 18	   // RAK1921 OLED display
-#define UVL_ID 19	   // RAK12019 UV light sensor
+// #define UVL_ID 19	   // RAK12019 UV light sensor
 // #define TOUCH_ID 20	   // RAK14002 Touch Pad
 // #define CURRENT_ID 21  // RAK16000 current sensor
 // #define MPU_ID 22	   // RAK1905 9DOF MPU9250 sensor
@@ -62,20 +62,20 @@ extern volatile sensors_t found_sensors[];
 #include "wisblock_cayenne.h"
 // Cayenne LPP Channel numbers per sensor value
 #define LPP_CHANNEL_BATT 1			   // Base Board
-#define LPP_CHANNEL_HUMID 2			   // RAK1901
-#define LPP_CHANNEL_TEMP 3			   // RAK1901
-#define LPP_CHANNEL_PRESS 4			   // RAK1902
-#define LPP_CHANNEL_LIGHT 5			   // RAK1903
+// #define LPP_CHANNEL_HUMID 2			   // RAK1901
+// #define LPP_CHANNEL_TEMP 3			   // RAK1901
+// #define LPP_CHANNEL_PRESS 4			   // RAK1902
+// #define LPP_CHANNEL_LIGHT 5			   // RAK1903
 #define LPP_CHANNEL_HUMID_2 6		   // RAK1906
 #define LPP_CHANNEL_TEMP_2 7		   // RAK1906
 #define LPP_CHANNEL_PRESS_2 8		   // RAK1906
 #define LPP_CHANNEL_GAS_2 9			   // RAK1906
-#define LPP_CHANNEL_GPS 10			   // RAK1910/RAK12500
+// #define LPP_CHANNEL_GPS 10			   // RAK1910/RAK12500
 // #define LPP_CHANNEL_SOIL_TEMP 11	   // RAK12035
 // #define LPP_CHANNEL_SOIL_HUMID 12	   // RAK12035
 // #define LPP_CHANNEL_SOIL_HUMID_RAW 13  // RAK12035
 // #define LPP_CHANNEL_SOIL_VALID 14	   // RAK12035
-#define LPP_CHANNEL_LIGHT2 15		   // RAK12010
+// #define LPP_CHANNEL_LIGHT2 15		   // RAK12010
 #define LPP_CHANNEL_VOC 16			   // RAK12047
 // #define LPP_CHANNEL_GAS 17			   // RAK12004
 // #define LPP_CHANNEL_GAS_PERC 18		   // RAK12004
@@ -87,8 +87,8 @@ extern volatile sensors_t found_sensors[];
 // #define LPP_CHANNEL_TOF_VALID 24	   // RAK12014
 // #define LPP_CHANNEL_GYRO 25			   // RAK12025
 // #define LPP_CHANNEL_GESTURE 26		   // RAK14008
-#define LPP_CHANNEL_UVI 27			   // RAK12019
-#define LPP_CHANNEL_UVS 28			   // RAK12019
+// #define LPP_CHANNEL_UVI 27			   // RAK12019
+// #define LPP_CHANNEL_UVS 28			   // RAK12019
 // #define LPP_CHANNEL_CURRENT_CURRENT 29 // RAK16000
 // #define LPP_CHANNEL_CURRENT_VOLTAGE 30 // RAK16000
 // #define LPP_CHANNEL_CURRENT_POWER 31   // RAK16000
@@ -104,75 +104,19 @@ extern volatile sensors_t found_sensors[];
 extern WisCayenne g_solution_data;
 
 // Sensor functions
-bool init_rak1901(void);
-void read_rak1901(void);
-void get_rak1901_values(float *values);
-bool init_rak1902(void);
-void read_rak1902(void);
-uint16_t get_alt_rak1902(void);
-bool init_rak1903(void);
-void read_rak1903(void);
-bool init_rak1904(void);
-void read_rak1904(void);
-void int_assign_rak1904(uint8_t new_irq_pin);
-void clear_int_rak1904(void);
-bool init_rak1905(void);
-void read_rak1905(void);
-void clear_int_rak1905(void);
 bool init_rak1906(void);
 void start_rak1906(void);
 bool read_rak1906(void);
-uint16_t get_alt_rak1906(void);
-bool init_rak1921(void);
-void rak1921_add_line(char *line);
-void rak1921_show(void);
-void rak1921_write_header(char *header_line);
-bool init_rak12002(void);
-void set_rak12002(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute);
-void read_rak12002(void);
-bool init_rak12003(void);
-void read_rak12003(void);
-bool init_rak12010(void);
-void read_rak12010(void);
+void get_rak1906_values(float *values);
 bool init_rak12037(void);
 void read_rak12037(void);
-bool init_rak12040(void);
-void read_rak12040(void);
 bool init_rak12047(void);
 void read_rak12047(void);
-bool init_gnss(void);
-bool poll_gnss(void);
-bool init_rak15000(void);
-bool read_rak15000(uint16_t addr, uint8_t *buffer, uint16_t num);
-bool write_rak15000(uint16_t addr, uint8_t *buffer, uint16_t num);
-bool init_rak15001(void);
-bool read_rak15001(uint16_t address, uint8_t *buffer, uint16_t size);
-bool write_rak15001(uint16_t address, uint8_t *buffer, uint16_t size);
-bool read_config(void);
 
 // Custom AT commands
-bool init_rtc_at(void);
 bool get_at_setting(uint32_t setting_type);
 bool save_at_setting(uint32_t setting_type);
 bool init_frequency_at(void);
-
-// Sensor global definitions
-extern float mean_seal_level_press;
-extern time_t last_trigger;
-extern bool motion_detected;
-
-/** RTC date/time structure */
-struct date_time_s
-{
-	uint16_t year;
-	uint8_t month;
-	uint8_t weekday;
-	uint8_t date;
-	uint8_t hour;
-	uint8_t minute;
-	uint8_t second;
-};
-extern date_time_s g_date_time;
 
 /** Settings offset in flash */
 // #define GNSS_OFFSET 0x00000000		// length 1 byte

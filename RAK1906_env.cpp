@@ -110,7 +110,7 @@ bool read_rak1906()
  *
  * @param values array for temperature [0] and humidity [1]
  */
-void get_rak1901_values(float *values)
+void get_rak1906_values(float *values)
 {
 	values[0] = bme.temperature;
 	values[1] = bme.humidity;
