@@ -103,7 +103,7 @@ void find_modules(void)
 	{
 		if (init_rak12037())
 		{
-			sprintf(g_dev_name, "RUI3 Env Sensor");
+			sprintf(g_dev_name, "RUI3 CO2 Sensor");
 		}
 		else
 		{

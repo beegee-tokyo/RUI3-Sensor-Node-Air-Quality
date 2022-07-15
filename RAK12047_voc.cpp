@@ -12,10 +12,12 @@
 #include <SensirionI2CSgp40.h>
 #include <VOCGasIndexAlgorithm.h>
 
+/** Sampling interval for the algorithm */
+int32_t sampling_interval = 10;
 /** Instance for the VOC sensor */
 SensirionI2CSgp40 sgp40;
 /** Instance for the VOC algorithm */
-VOCGasIndexAlgorithm voc_algorithm = VOCGasIndexAlgorithm();
+VOCGasIndexAlgorithm voc_algorithm(sampling_interval);
 
 /** Calculated VOC index */
 int32_t voc_index = 0;
@@ -101,7 +103,7 @@ bool init_rak12047(void)
 	// Create a unified timer in C language. This API is defined in udrv_timer.h. It will be replaced by api.system.timer.create() after story #1195 is done.
 	udrv_timer_create(TIMER_1, do_read_rak12047, HTMR_PERIODIC);
 	// Start a unified C timer in C language. This API is defined in udrv_timer.h. It will be replaced by api.system.timer.start() after story #1195 is done.
-	udrv_timer_start(TIMER_1, 1000, NULL);
+	udrv_timer_start(TIMER_1, sampling_interval*1000, NULL);
 
 	return true;
 }
@@ -139,22 +141,20 @@ void do_read_rak12047(void *)
 	digitalWrite(LED_BLUE, HIGH);
 #endif
 	uint16_t error;
-	float humidity = 0;	   // %RH
-	float temperature = 0; // degreeC
 	uint16_t srawVoc = 0;
-	uint16_t defaultRh = 0x8000;
-	uint16_t defaultT = 0x6666;
-	float rak1906_values[2] = {0.0};
+	uint16_t defaultRh = 0x8000; // %RH
+	uint16_t defaultT = 0x6666;	 // degreeC
+	float t_h_values[2] = {0.0};
 
 	if (found_sensors[ENV_ID].found_sensor)
 	{
-		get_rak1906_values(rak1906_values);
+		get_rak1906_values(t_h_values);
 		// MYLOG("VOC", "Rh: %.2f T: %.2f", humidity, temperature);
 
-		if ((temperature != 0.0) && (temperature != 0.0))
+		if ((t_h_values[0] != 0.0) && (t_h_values[1] != 0.0))
 		{
-			defaultRh = (uint16_t)(humidity * 65535 / 100);
-			defaultT = (uint16_t)((temperature + 45) * 65535 / 175);
+			defaultRh = (uint16_t)(t_h_values[0] * 65535 / 100);
+			defaultT = (uint16_t)((t_h_values[1] + 45) * 65535 / 175);
 		}
 	}
 
