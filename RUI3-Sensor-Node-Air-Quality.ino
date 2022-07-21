@@ -131,6 +131,9 @@ void setup()
 	MYLOG("SETUP", "RAKwireless %s Node", g_dev_name);
 	MYLOG("SETUP", "Setup the device with AT commands first");
 
+	// Search for modules
+	find_modules();
+	
 	// Get saved sending frequency from flash
 	get_at_setting(SEND_FREQ_OFFSET);
 

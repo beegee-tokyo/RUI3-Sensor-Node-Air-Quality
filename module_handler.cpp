@@ -99,17 +99,17 @@ void find_modules(void)
 		}
 	}
 
-	if (found_sensors[CO2_ID].found_sensor)
-	{
-		if (init_rak12037())
-		{
-			sprintf(g_dev_name, "RUI3 CO2 Sensor");
-		}
-		else
-		{
-			found_sensors[CO2_ID].found_sensor = false;
-		}
-	}
+	// if (found_sensors[CO2_ID].found_sensor)
+	// {
+	// 	if (init_rak12037())
+	// 	{
+	// 		sprintf(g_dev_name, "RUI3 CO2 Sensor");
+	// 	}
+	// 	else
+	// 	{
+	// 		found_sensors[CO2_ID].found_sensor = false;
+	// 	}
+	// }
 
 	if (found_sensors[VOC_ID].found_sensor)
 	{
@@ -172,11 +172,11 @@ void get_sensor_values(void)
 		read_rak1906();
 	}
 
-	if (found_sensors[CO2_ID].found_sensor)
-	{
-		// Read sensor data
-		read_rak12037();
-	}
+	// if (found_sensors[CO2_ID].found_sensor)
+	// {
+	// 	// Read sensor data
+	// 	read_rak12037();
+	// }
 
 	if (found_sensors[VOC_ID].found_sensor)
 	{
