@@ -137,12 +137,12 @@ void setup()
 	// Get saved sending frequency from flash
 	get_at_setting(SEND_FREQ_OFFSET);
 
-	// Create a unified timer in C language. This API is defined in udrv_timer.h. It will be replaced by api.system.timer.create() after story #1195 is done.
-	udrv_timer_create(TIMER_0, sensor_handler, HTMR_PERIODIC);
+	// Create a unified timer
+	api.system.timer.create(RAK_TIMER_0,sensor_handler,RAK_TIMER_PERIODIC);
 	if (g_lorawan_settings.send_repeat_time != 0)
 	{
-		// Start a unified C timer in C language. This API is defined in udrv_timer.h. It will be replaced by api.system.timer.start() after story #1195 is done.
-		udrv_timer_start(TIMER_0, g_lorawan_settings.send_repeat_time, NULL);
+		// Start a unified C timer
+		api.system.timer.start(RAK_TIMER_0, g_lorawan_settings.send_repeat_time, NULL);
 	}
 
 	// Register the custom AT command to set the send frequency
