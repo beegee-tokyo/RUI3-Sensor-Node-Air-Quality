@@ -3,7 +3,7 @@ RUI3 example code for WisBlock I2C sensor modules, focused on Air Quality Sensor
 
 This code is _**Work in progress**_ and far from finished. But it can give a first start how to use RUI3.     
 
-The code compiles on both RAK4631 and RAK3172 and I test it on both modules.
+The code compiles on both RAK4631 and RAK3172 and I test it on both modules.    
 
 # Content
 - [Hardware supported](#hardware_supported)
@@ -36,8 +36,8 @@ The code compiles on both RAK4631 and RAK3172 and I test it on both modules.
 - [CayenneLPP](https://registry.platformio.org/libraries/sabas1080/CayenneLPP) ⤴️
 - [ArduinoJson](https://registry.platformio.org/libraries/bblanchon/ArduinoJson) ⤴️
 ## Sensor libraries
-- [Adafruit BME680 Library](https://registry.platformio.org/libraries/adafruit/Adafruit%20BME680%20Library) ⤴️
-- [Adafruit Unified Sensor](https://registry.platformio.org/libraries/adafruit/Adafruit%20Unified%20Sensor) ⤴️
+- [Adafruit BME680 Library (only RAK4631-R)](https://registry.platformio.org/libraries/adafruit/Adafruit%20BME680%20Library) ⤴️
+- [Adafruit Unified Sensor (only RAK4631-R)](https://registry.platformio.org/libraries/adafruit/Adafruit%20Unified%20Sensor) ⤴️
 - [Sensirion Core](https://registry.platformio.org/libraries/sensirion/Sensirion%20Core) ⤴️
 - [Sensirion Gas Index Algorithm](https://registry.platformio.org/libraries/sensirion/Sensirion%20Gas%20Index%20Algorithm) ⤴️
 - [Sensirion I2C SGP40](https://registry.platformio.org/libraries/sensirion/Sensirion%20I2C%20SGP40) ⤴️

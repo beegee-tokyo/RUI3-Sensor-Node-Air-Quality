@@ -9,6 +9,7 @@
  *
  */
 #include "main.h"
+#ifndef _VARIANT_RAK3172_
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME680.h>
 
@@ -44,16 +45,6 @@ bool init_rak1906(void)
 	return true;
 }
 
-// /**
-//  * @brief Start sensing on the BME6860
-//  *
-//  */
-// void start_rak1906(void)
-// {
-// 	// MYLOG("BME", "Start BME measuring");
-// 	bme.beginReading();
-// }
-
 /**
  * @brief Read environment data from BME680
  *     Data is added to Cayenne LPP payload as channels
@@ -85,22 +76,11 @@ bool read_rak1906()
 		return false;
 	}
 
-// #if MY_DEBUG > 0
-// 	int16_t temp_int = (int16_t)(bme.temperature * 10.0);
-// 	uint16_t humid_int = (uint16_t)(bme.humidity * 2);
-// 	uint16_t press_int = (uint16_t)(bme.pressure / 10);
-// 	uint16_t gasres_int = (uint16_t)(bme.gas_resistance / 10);
-// #endif
-
 	g_solution_data.addRelativeHumidity(LPP_CHANNEL_HUMID_2, bme.humidity);
 	g_solution_data.addTemperature(LPP_CHANNEL_TEMP_2, bme.temperature);
 	g_solution_data.addBarometricPressure(LPP_CHANNEL_PRESS_2, bme.pressure / 100);
 	g_solution_data.addAnalogInput(LPP_CHANNEL_GAS_2, (float)(bme.gas_resistance) / 1000.0);
 
-// #if MY_DEBUG > 0
-// 	MYLOG("BME", "RH= %.2f T= %.2f", bme.humidity, bme.temperature);
-// 	MYLOG("BME", "P= %.2f R= %.2f", bme.pressure / 100.0, (float)(bme.gas_resistance) / 1000.0);
-// #endif
 	return true;
 }
 
@@ -116,3 +96,116 @@ void get_rak1906_values(float *values)
 	values[1] = bme.humidity;
 	return;
 }
+
+#else // _VARIANT_RAK3172_
+#include "rak1906.h"
+
+#pragma message("RAK3172")
+
+/** BME680 instance for Wire */
+rak1906 bme;
+
+/** Last temperature read */
+float _last_bme_temp = 0;
+/** Last humidity read */
+float _last_bme_humid = 0;
+/** Flag if values were read already (used by RAK12047 VOC sensor) */
+bool _has_last_bme_values = false;
+
+/**
+ * @brief Initialize the BME680 sensor
+ *
+ * @return true if sensor was found
+ * @return false if sensor was not found
+ */
+bool init_rak1906(void)
+{
+	Wire.begin();
+
+	if (!bme.init())
+	{
+		MYLOG("BME", "Could not find a valid BME680 sensor, check wiring!");
+		return false;
+	}
+
+	// Set up oversampling and filter initialization
+	/// \todo Needs to be implemented in the RUI3 RAK1906 library!!!!
+	bme.setOversampling(TemperatureSensor, Oversample8);
+	bme.setOversampling(HumiditySensor, Oversample2);
+	bme.setOversampling(PressureSensor, Oversample4);
+	bme.setIIRFilter(IIR4);
+	bme.setGas(320, 150); // 320*C for 150 ms
+
+	return true;
+}
+
+/**
+ * @brief Read environment data from BME680
+ *     Data is added to Cayenne LPP payload as channels
+ *     LPP_CHANNEL_HUMID_2, LPP_CHANNEL_TEMP_2,
+ *     LPP_CHANNEL_PRESS_2 and LPP_CHANNEL_GAS_2
+ *
+ *
+ * @return true if reading was successful
+ * @return false if reading failed
+ */
+bool read_rak1906()
+{
+	MYLOG("BME", "Reading BME680");
+	if (!bme.update())
+	{
+		MYLOG("BME", "BME reading timeout");
+		return false;
+	}
+
+#if MY_DEBUG > 0
+	int16_t temp_int = (int16_t)(bme.temperature() * 10.0);
+	uint16_t humid_int = (uint16_t)(bme.humidity() * 2);
+	uint16_t press_int = (uint16_t)(bme.pressure() / 10);
+	uint16_t gasres_int = (uint16_t)(bme.gas() / 10);
+#endif
+
+	g_solution_data.addRelativeHumidity(LPP_CHANNEL_HUMID_2, bme.humidity());
+	g_solution_data.addTemperature(LPP_CHANNEL_TEMP_2, bme.temperature());
+	g_solution_data.addBarometricPressure(LPP_CHANNEL_PRESS_2, bme.pressure() / 100);
+	g_solution_data.addAnalogInput(LPP_CHANNEL_GAS_2, (float)(bme.gas()) / 1000.0);
+
+#if MY_DEBUG > 0
+	MYLOG("BME", "RH= %.2f T= %.2f", bme.humidity(), bme.temperature());
+	MYLOG("BME", "P= %.2f R= %.2f", bme.pressure() / 100.0, (float)(bme.gas()) / 1000.0);
+#endif
+
+	_last_bme_temp = bme.humidity();
+	_last_bme_humid = bme.temperature();
+	_has_last_bme_values = true;
+
+	return true;
+}
+
+/**
+ * @brief Returns the latest values from the sensor
+ *        or starts a new reading
+ *
+ * @param values array for temperature [0] and humidity [1]
+ */
+void get_rak1906_values(float *values)
+{
+	if (_has_last_bme_values)
+	{
+		_has_last_bme_values = false;
+		values[0] = _last_bme_temp;
+		values[1] = _last_bme_humid;
+		return;
+	}
+	else
+	{
+		// start_rak1906();
+		// delay(100);
+		read_rak1906();
+		values[0] = _last_bme_temp;
+		values[1] = _last_bme_humid;
+	}
+	return;
+}
+
+#endif // _VARIANT_RAK3172_
