@@ -77,7 +77,7 @@ struct s_lorawan_settings
 	bool otaa_enabled = true;
 	// Flag for ADR on or off
 	bool adr_enabled = false;
-	// Send frequency, default is off
+	// send interval, default is off
 	uint32_t send_repeat_time = 0;
 	// TX power 0 .. 10
 	uint8_t tx_power = 0;

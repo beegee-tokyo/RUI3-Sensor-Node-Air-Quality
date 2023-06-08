@@ -135,7 +135,7 @@ void setup()
 	find_modules();
 	
 	// Get saved sending frequency from flash
-	get_at_setting(SEND_FREQ_OFFSET);
+	get_at_setting(SEND_INT_OFFSET);
 
 	// Create a unified timer
 	api.system.timer.create(RAK_TIMER_0,sensor_handler,RAK_TIMER_PERIODIC);
@@ -145,8 +145,8 @@ void setup()
 		api.system.timer.start(RAK_TIMER_0, g_lorawan_settings.send_repeat_time, NULL);
 	}
 
-	// Register the custom AT command to set the send frequency
-	MYLOG("SETUP", "Add custom AT command %s", init_frequency_at() ? "Success" : "Fail");
+	// Register the custom AT command to set the send interval
+	MYLOG("SETUP", "Add custom AT command %s", init_send_interval_at() ? "Success" : "Fail");
 
 	// Show found modules
 	announce_modules();

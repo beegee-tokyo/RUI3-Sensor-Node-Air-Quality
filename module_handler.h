@@ -116,11 +116,11 @@ void read_rak12047(void);
 // Custom AT commands
 bool get_at_setting(uint32_t setting_type);
 bool save_at_setting(uint32_t setting_type);
-bool init_frequency_at(void);
+bool init_send_interval_at(void);
 bool init_status_at(void);
 
 /** Settings offset in flash */
 // #define GNSS_OFFSET 0x00000000		// length 1 byte
-#define SEND_FREQ_OFFSET 0x00000002 // length 4 bytes
+#define SEND_INT_OFFSET 0x00000002 // length 4 bytes
 
 #endif

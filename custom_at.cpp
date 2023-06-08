@@ -11,7 +11,7 @@
 #include "main.h"
 
 // Forward declarations
-int freq_send_handler(SERIAL_PORT port, char *cmd, stParam *param);
+int send_interval_handler(SERIAL_PORT port, char *cmd, stParam *param);
 int status_handler(SERIAL_PORT port, char *cmd, stParam *param);
 
 #ifdef _VARIANT_RAK4630_
@@ -37,20 +37,20 @@ int status_handler(SERIAL_PORT port, char *cmd, stParam *param);
 #endif
 
 /**
- * @brief Add send-frequency AT command
+ * @brief Add send interval AT command
  *
  * @return true if success
  * @return false if failed
  */
-bool init_frequency_at(void)
+bool init_send_interval_at(void)
 {
-	return api.system.atMode.add((char *)"SENDFREQ",
-								 (char *)"Set/Get the frequent automatic sending time values in seconds 0 = off, max 2,147,483 seconds",
-								 (char *)"SENDFREQ", freq_send_handler);
+	return api.system.atMode.add((char *)"SENDINT",
+								 (char *)"Set/Get the sending interval time values in seconds 0 = off, max 2,147,483 seconds",
+								 (char *)"SENDINT", send_interval_handler);
 }
 
 /**
- * @brief Handler for send frequency AT commands
+ * @brief Handler for send interval AT commands
  *
  * @param port Serial port used
  * @param cmd char array with the received AT command
@@ -59,7 +59,7 @@ bool init_frequency_at(void)
  * 			AT_OK AT command & parameters valid
  * 			AT_PARAM_ERROR command or parameters invalid
  */
-int freq_send_handler(SERIAL_PORT port, char *cmd, stParam *param)
+int send_interval_handler(SERIAL_PORT port, char *cmd, stParam *param)
 {
 	if (param->argc == 1 && !strcmp(param->argv[0], "?"))
 	{
@@ -80,13 +80,13 @@ int freq_send_handler(SERIAL_PORT port, char *cmd, stParam *param)
 			}
 		}
 
-		uint32_t new_send_freq = strtoul(param->argv[0], NULL, 10);
+		uint32_t new_send_interval = strtoul(param->argv[0], NULL, 10);
 
-		// MYLOG("AT_CMD", "Requested frequency %ld", new_send_freq);
+		// MYLOG("AT_CMD", "Requested interval %ld", new_send_interval);
 
-		g_lorawan_settings.send_repeat_time = new_send_freq * 1000;
+		g_lorawan_settings.send_repeat_time = new_send_interval * 1000;
 
-		// MYLOG("AT_CMD", "New frequency %ld", g_lorawan_settings.send_repeat_time);
+		// MYLOG("AT_CMD", "New interval %ld", g_lorawan_settings.send_repeat_time);
 		// Stop the timer
 		api.system.timer.stop(RAK_TIMER_0);
 
@@ -96,7 +96,7 @@ int freq_send_handler(SERIAL_PORT port, char *cmd, stParam *param)
 			api.system.timer.start(RAK_TIMER_0, g_lorawan_settings.send_repeat_time, NULL);
 		}
 		// Save custom settings
-		save_at_setting(SEND_FREQ_OFFSET);
+		save_at_setting(SEND_INT_OFFSET);
 	}
 	else
 	{
@@ -143,73 +143,6 @@ int status_handler(SERIAL_PORT port, char *cmd, stParam *param)
 
 	if (param->argc == 1 && !strcmp(param->argv[0], "?"))
 	{
-		// Serial.println("Device Status:");
-		// value_str = api.system.modelId.get();
-		// value_str.toUpperCase();
-		// Serial.printf("Module: %s\r\n", value_str.c_str());
-		// Serial.printf("Version: %s\r\n", api.system.firmwareVersion.get().c_str());
-		// Serial.printf("Send time: %d s\r\n", g_send_repeat_time / 1000);
-		// nw_mode = api.lorawan.nwm.get();
-		// Serial.printf("Network mode %s\r\n", nwm_list[nw_mode]);
-		// if (nw_mode == 1)
-		// {
-		// 	Serial.printf("Network %s\r\n", api.lorawan.njs.get() ? "joined" : "not joined");
-		// 	region_set = api.lorawan.band.get();
-		// 	Serial.printf("Region: %d\r\n", region_set);
-		// 	Serial.printf("Region: %s\r\n", regions_list[region_set]);
-		// 	if (api.lorawan.njm.get())
-		// 	{
-		// 		Serial.println("OTAA mode");
-		// 		api.lorawan.deui.get(key_eui, 8);
-		// 		Serial.printf("DevEUI = %02X%02X%02X%02X%02X%02X%02X%02X\r\n",
-		// 					  key_eui[0], key_eui[1], key_eui[2], key_eui[3],
-		// 					  key_eui[4], key_eui[5], key_eui[6], key_eui[7]);
-		// 		api.lorawan.appeui.get(key_eui, 8);
-		// 		Serial.printf("AppEUI = %02X%02X%02X%02X%02X%02X%02X%02X\r\n",
-		// 					  key_eui[0], key_eui[1], key_eui[2], key_eui[3],
-		// 					  key_eui[4], key_eui[5], key_eui[6], key_eui[7]);
-		// 		api.lorawan.appkey.get(key_eui, 16);
-		// 		Serial.printf("AppKey = %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X\r\n",
-		// 					  key_eui[0], key_eui[1], key_eui[2], key_eui[3],
-		// 					  key_eui[4], key_eui[5], key_eui[6], key_eui[7],
-		// 					  key_eui[8], key_eui[9], key_eui[10], key_eui[11],
-		// 					  key_eui[12], key_eui[13], key_eui[14], key_eui[15]);
-		// 	}
-		// 	else
-		// 	{
-		// 		Serial.println("ABP mode");
-		// 		api.lorawan.appskey.get(key_eui, 16);
-		// 		Serial.printf("AppsKey = %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X\r\n",
-		// 					  key_eui[0], key_eui[1], key_eui[2], key_eui[3],
-		// 					  key_eui[4], key_eui[5], key_eui[6], key_eui[7],
-		// 					  key_eui[8], key_eui[9], key_eui[10], key_eui[11],
-		// 					  key_eui[12], key_eui[13], key_eui[14], key_eui[15]);
-		// 		api.lorawan.nwkskey.get(key_eui, 16);
-		// 		Serial.printf("NwsKey = %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X\r\n",
-		// 					  key_eui[0], key_eui[1], key_eui[2], key_eui[3],
-		// 					  key_eui[4], key_eui[5], key_eui[6], key_eui[7],
-		// 					  key_eui[8], key_eui[9], key_eui[10], key_eui[11],
-		// 					  key_eui[12], key_eui[13], key_eui[14], key_eui[15]);
-		// 		api.lorawan.daddr.set(key_eui, 4);
-		// 		Serial.printf("DevAddr = %02X%02X%02X%02X\r\n",
-		// 					  key_eui[0], key_eui[1], key_eui[2], key_eui[3]);
-		// 	}
-		// }
-		// else if (nw_mode == 0)
-		// {
-		// 	Serial.printf("Frequency = %d\r\n", api.lorawan.pfreq.get());
-		// 	Serial.printf("SF = %d\r\n", api.lorawan.psf.get());
-		// 	Serial.printf("BW = %d\r\n", api.lorawan.pbw.get());
-		// 	Serial.printf("CR = %d\r\n", api.lorawan.pcr.get());
-		// 	Serial.printf("Preamble length = %d\r\n", api.lorawan.ppl.get());
-		// 	Serial.printf("TX power = %d\r\n", api.lorawan.ptp.get());
-		// }
-		// else
-		// {
-		// 	Serial.printf("Frequency = %d\r\n", api.lorawan.pfreq.get());
-		// 	Serial.printf("Bitrate = %d\r\n", api.lorawan.pbr.get());
-		// 	Serial.printf("Deviaton = %d\r\n", api.lorawan.pfdev.get());
-		// }
 		AT_PRINTF("Device Status:");
 		value_str = api.system.modelId.get();
 		value_str.toUpperCase();
@@ -289,7 +222,7 @@ int status_handler(SERIAL_PORT port, char *cmd, stParam *param)
  * @brief Get setting from flash
  *
  * @param setting_type type of setting, valid values
- * 			GNSS_OFFSET for GNSS precision and data format
+ * 			SEND_INT_OFFSET for send interval setting
  * @return true read from flash was successful
  * @return false read from flash failed or invalid settings type
  */
@@ -298,44 +231,22 @@ bool get_at_setting(uint32_t setting_type)
 	uint8_t flash_value[16];
 	switch (setting_type)
 	{
-	// case GNSS_OFFSET:
-	// 	if (!api.system.flash.get(GNSS_OFFSET, flash_value, 2))
-	// 	{
-	// 		MYLOG("AT_CMD", "Failed to read GNSS value from Flash");
-	// 		return false;
-	// 	}
-	// 	if (flash_value[1] != 0xAA)
-	// 	{
-	// 		MYLOG("AT_CMD", "Invalid GNSS settings, using default");
-	// 		gnss_format = 0;
-	// 		save_at_setting(GNSS_OFFSET);
-	// 	}
-	// 	if (flash_value[0] > HELIUM_MAPPER)
-	// 	{
-	// 		MYLOG("AT_CMD", "No valid GNSS value found, set to default, read 0X%0X", flash_value[0]);
-	// 		gnss_format = 0;
-	// 		return false;
-	// 	}
-	// 	gnss_format = flash_value[0];
-	// 	MYLOG("AT_CMD", "Found GNSS format to %d", flash_value[0]);
-	// 	return true;
-	// 	break;
-	case SEND_FREQ_OFFSET:
-		if (!api.system.flash.get(SEND_FREQ_OFFSET, flash_value, 5))
+	case SEND_INT_OFFSET:
+		if (!api.system.flash.get(SEND_INT_OFFSET, flash_value, 5))
 		{
-			// MYLOG("AT_CMD", "Failed to read send frequency from Flash");
+			// MYLOG("AT_CMD", "Failed to read send interval from Flash");
 			return false;
 		}
 		if (flash_value[4] != 0xAA)
 		{
-			// MYLOG("AT_CMD", "No valid send frequency found, set to default, read 0X%02X 0X%02X 0X%02X 0X%02X",
+			// MYLOG("AT_CMD", "No valid send interval found, set to default, read 0X%02X 0X%02X 0X%02X 0X%02X",
 			// 	  flash_value[0], flash_value[1],
 			// 	  flash_value[2], flash_value[3]);
-			g_lorawan_settings.send_repeat_time = 0;
-			save_at_setting(SEND_FREQ_OFFSET);
+			g_lorawan_settings.send_repeat_time = 60000;
+			save_at_setting(SEND_INT_OFFSET);
 			return false;
 		}
-		// MYLOG("AT_CMD", "Read send frequency 0X%02X 0X%02X 0X%02X 0X%02X",
+		// MYLOG("AT_CMD", "Read send interval 0X%02X 0X%02X 0X%02X 0X%02X",
 		// 	  flash_value[0], flash_value[1],
 		// 	  flash_value[2], flash_value[3]);
 		g_lorawan_settings.send_repeat_time = 0;
@@ -343,7 +254,7 @@ bool get_at_setting(uint32_t setting_type)
 		g_lorawan_settings.send_repeat_time |= flash_value[1] << 8;
 		g_lorawan_settings.send_repeat_time |= flash_value[2] << 16;
 		g_lorawan_settings.send_repeat_time |= flash_value[3] << 24;
-		// MYLOG("AT_CMD", "Send frequency found %ld", g_lorawan_settings.send_repeat_time);
+		// MYLOG("AT_CMD", "send interval found %ld", g_lorawan_settings.send_repeat_time);
 		return true;
 		break;
 	default:
@@ -355,7 +266,7 @@ bool get_at_setting(uint32_t setting_type)
  * @brief Save setting to flash
  *
  * @param setting_type type of setting, valid values
- * 			GNSS_OFFSET for GNSS precision and data format
+ * 			SEND_INT_OFFSET for send interval setting
  * @return true write to flash was successful
  * @return false write to flash failed or invalid settings type
  */
@@ -365,21 +276,16 @@ bool save_at_setting(uint32_t setting_type)
 	bool wr_result = false;
 	switch (setting_type)
 	{
-	// case GNSS_OFFSET:
-	// 	flash_value[0] = gnss_format;
-	// 	flash_value[1] = 0xAA;
-	// 	return api.system.flash.set(GNSS_OFFSET, flash_value, 2);
-	// 	break;
-	case SEND_FREQ_OFFSET:
+	case SEND_INT_OFFSET:
 		flash_value[0] = (uint8_t)(g_lorawan_settings.send_repeat_time >> 0);
 		flash_value[1] = (uint8_t)(g_lorawan_settings.send_repeat_time >> 8);
 		flash_value[2] = (uint8_t)(g_lorawan_settings.send_repeat_time >> 16);
 		flash_value[3] = (uint8_t)(g_lorawan_settings.send_repeat_time >> 24);
 		flash_value[4] = 0xAA;
-		// MYLOG("AT_CMD", "Writing send frequency 0X%02X 0X%02X 0X%02X 0X%02X ",
+		// MYLOG("AT_CMD", "Writing send interval 0X%02X 0X%02X 0X%02X 0X%02X ",
 		// 	  flash_value[0], flash_value[1],
 		// 	  flash_value[2], flash_value[3]);
-		wr_result = api.system.flash.set(SEND_FREQ_OFFSET, flash_value, 5);
+		wr_result = api.system.flash.set(SEND_INT_OFFSET, flash_value, 5);
 		// MYLOG("AT_CMD", "Writing %s", wr_result ? "Success" : "Fail");
 		return wr_result;
 		break;

@@ -76,9 +76,14 @@ bool read_rak1906()
 		return false;
 	}
 
+	MYLOG("BME", "Temperature: %.2f", bme.humidity);
+	MYLOG("BME", "Humidity: %.2f", bme.humidity);
+	MYLOG("BME", "Barometer: %.2f", bme.pressure / 100.0);
+	MYLOG("BME", "Gas resistance: %.2f", (float)(bme.gas_resistance / 1000.0));
+
 	g_solution_data.addRelativeHumidity(LPP_CHANNEL_HUMID_2, bme.humidity);
 	g_solution_data.addTemperature(LPP_CHANNEL_TEMP_2, bme.temperature);
-	g_solution_data.addBarometricPressure(LPP_CHANNEL_PRESS_2, bme.pressure / 100);
+	g_solution_data.addBarometricPressure(LPP_CHANNEL_PRESS_2, bme.pressure / 100.0);
 	g_solution_data.addAnalogInput(LPP_CHANNEL_GAS_2, (float)(bme.gas_resistance) / 1000.0);
 
 	return true;
